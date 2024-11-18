@@ -5,9 +5,14 @@ import (
 	"strings"
 
 	"github.com/Prokop6/simple_http_server/logger"
+
+	_ "embed"
 )
 
 var new_logger = logger.GetLogger()
+
+
+
 
 func RootHandler(w http.ResponseWriter,
 	r *http.Request) {

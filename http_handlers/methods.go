@@ -5,15 +5,20 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Prokop6/simple_http_server/http_templates"
 	"github.com/Prokop6/simple_http_server/logger"
 )
 
 
+func getRoot(w http.ResponseWriter, _ *http.Request) {
 
-func getRoot(w http.ResponseWriter, r *http.Request) {
 
-	w.Write([]byte("Server works!\n"))
+	err := http_templates.Template_collection.ExecuteTemplate(w, "index.html", nil)
+	
+	if err != nil {logger.GetLogger().Fatal(err)} 
+
 }
+
 
 func postEcho(w http.ResponseWriter, r *http.Request) {
 

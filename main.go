@@ -1,6 +1,8 @@
 package main
 
 import (
+	"embed"
+	"log"
 	"net/http"
 
 	"github.com/Prokop6/simple_http_server/http_handlers"
@@ -8,6 +10,9 @@ import (
 )
 
 var new_logger = logger.GetLogger()
+
+//go:embed http_templates/*.html
+var templates embed.FS
 
 
 func main() {
@@ -19,11 +24,6 @@ func main() {
 
 	new_logger.Println("Starting server")
 
-	err := http.ListenAndServe(":8080", mux)
-
-	if err != nil {
-		new_logger.Fatalln(err.Error())
-
-	}
+	log.Fatal(http.ListenAndServe(":8080", mux))
 
 }
