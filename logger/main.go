@@ -5,11 +5,9 @@ import (
 	"os"
 )
 
-var logger *log.Logger
-
-func GetLogger() (*log.Logger){
-	new_logger := log.New(os.Stdout, "LOG: ", log.Ldate|log.Ltime)
-
-	return new_logger
-
-}
+var Log_info = log.New(os.Stdout, "LOG: ", log.Ldate|log.Ltime)
+var Log_error = log.New(
+	os.Stdout,
+	"ERROR: ",
+	log.Ldate|log.Ltime,
+)

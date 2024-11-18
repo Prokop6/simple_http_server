@@ -9,11 +9,6 @@ import (
 	_ "embed"
 )
 
-var new_logger = logger.GetLogger()
-
-
-
-
 func RootHandler(w http.ResponseWriter,
 	r *http.Request) {
 
@@ -22,7 +17,7 @@ func RootHandler(w http.ResponseWriter,
 		getRoot(w, r)
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		new_logger.Printf("Received request with the method %s", r.Method)
+		logger.Log_info.Printf("Received request with the method %s", r.Method)
 	}
 }
 
@@ -33,7 +28,7 @@ func FileHandler(w http.ResponseWriter,
 	case http.MethodPost:
 
 	default:
-		WrongMethodHandler(w, r, new_logger)
+		WrongMethodHandler(w, r, logger.Log_error)
 	}
 
 }
@@ -48,6 +43,6 @@ func EchoHandler(w http.ResponseWriter,
 		postEcho(w, r)
 
 	default:
-		WrongMethodHandler(w, r, new_logger)
+		WrongMethodHandler(w, r, logger.Log_error)
 	}
 }

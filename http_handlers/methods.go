@@ -9,16 +9,15 @@ import (
 	"github.com/Prokop6/simple_http_server/logger"
 )
 
-
 func getRoot(w http.ResponseWriter, _ *http.Request) {
 
-
 	err := http_templates.Template_collection.ExecuteTemplate(w, "index.html", nil)
-	
-	if err != nil {logger.GetLogger().Fatal(err)} 
+
+	if err != nil {
+		logger.Log_error.Fatal(err)
+	}
 
 }
-
 
 func postEcho(w http.ResponseWriter, r *http.Request) {
 
@@ -33,12 +32,9 @@ func postEcho(w http.ResponseWriter, r *http.Request) {
 
 }
 
-
 func WrongMethodHandler(w http.ResponseWriter, r *http.Request, log *log.Logger) {
 	w.WriteHeader(http.StatusMethodNotAllowed)
 
-	new_logger := logger.GetLogger()
-
-	new_logger.Printf("Received request with the method %s", r.Method)
+	logger.Log_error.Printf("Received request with the method %s", r.Method)
 
 }

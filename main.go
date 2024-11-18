@@ -1,29 +1,43 @@
 package main
 
 import (
-	"embed"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/Prokop6/simple_http_server/http_handlers"
 	"github.com/Prokop6/simple_http_server/logger"
 )
 
-var new_logger = logger.GetLogger()
+func gracefulShutdown() {
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	s := <-quit
+	logger.Log_info.Print("Closing server...", s)
 
-//go:embed http_templates/*.html
-var templates embed.FS
+	//server.Close()
+	//server.Shutdown(context.TODO())
 
+	os.Exit(0)
+}
 
 func main() {
 
+	go gracefulShutdown()
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", http_handlers.RootHandler)
 	mux.HandleFunc("/echo", http_handlers.EchoHandler)
 
-	new_logger.Println("Starting server")
+	server := http.Server{
+		Addr:    ":8080",
+		Handler: mux,
+	}
 
-	log.Fatal(http.ListenAndServe(":8080", mux))
+	logger.Log_info.Print("Starting server")
+
+	go log.Fatal(server.ListenAndServe())
 
 }
